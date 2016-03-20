@@ -1,9 +1,15 @@
 
+# This project cleans up the data from the project at
+# http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
+
+
 # read the test data
 test_subject <- read.table("./test/subject_test.txt")
 test_data <- read.table("./test/X_test.txt")
 train_subject <- read.table("./train/subject_train.txt")
 train_data <- read.table("./train/X_train.txt")
+
+# read the column names for each measurement
 col_name <- read.table("./features.txt")
 
 # replace column labels
@@ -33,10 +39,12 @@ t2 <- test_data[,grep("mean|std|Activity|Subject",names(test_data))]
 tr2 <- train_data[,grep("mean|std|Activity|Subject",names(train_data))]
 # t2 and tr2 are the clean data set for later use.
 
+# t3 and tr3 contains the data for each combination of test subject and activity.
 t3 <-split(t2,list(t2$Subject,t2$Activity),drop=TRUE)
 tr3<-split(tr2,list(tr2$Subject,tr2$Activity),drop=TRUE)
 
-
+# compute the mean of all the measurements for each combination of subject and activity.
+# merge all the results together to a data frame.
 if (length(t3)>0) {
   temp_t <- colMeans(t3[[1]])
   for (i in 2:length(t3)) {
@@ -53,20 +61,25 @@ if (length(tr3)>0) {
   }
 }
 
+# Now combine the test and train data to form the final tidy data set.
 final_data_set <- t2
 final_data_set <- rbind(final_data_set, tr2)
 
-
+# combine the derived data into final data set.
 final_avg_data_set <- temp_t
 final_avg_data_set <- rbind(final_avg_data_set, temp_tr)
 final_avg_data_set <- data.frame(final_avg_data_set)
 
 # final_data_set is the clean version of the data containing only mean and std.
 # final_avg_data_set is the average measurements for various subjects and activities.
+
+# Add the descriptive activity name to the data.
 names(act_name) = c("Activity","Activity_Name")
 final_data_set <- merge(final_data_set,act_name)
 final_avg_data_set <- merge(final_avg_data_set,act_name)
 names(final_avg_data_set) <- names(final_data_set)
 
-write.csv(final_data_set,"./final_data_set.csv")
-write.csv(final_avg_data_set,"./derived_data_set.csv")
+# output to file.
+write.csv(final_data_set,"./final_data_set.csv", row.names = FALSE)
+write.csv(final_avg_data_set,"./derived_data_set.csv", row.names = FALSE)
+write.table(final_avg_data_set,"./derived_data_set.txt", row.names=FALSE)
