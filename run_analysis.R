@@ -81,5 +81,6 @@ names(final_avg_data_set) <- names(final_data_set)
 
 # output to file.
 write.csv(final_data_set,"./final_data_set.csv", row.names = FALSE)
-write.csv(final_avg_data_set,"./derived_data_set.csv", row.names = FALSE)
-write.table(final_avg_data_set,"./derived_data_set.txt", row.names=FALSE)
+#write.csv(final_avg_data_set,"./derived_data_set.csv", row.names = FALSE)
+#write.table(final_avg_data_set,"./derived_data_set.txt", row.names=FALSE)
+
