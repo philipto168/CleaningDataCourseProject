@@ -13,6 +13,8 @@ should be run on the directory containing the raw data.  When the script is exec
 The final_data_set.csv contains the tidy data set described in step 2 in the codebook.
 The derived_data_set.csv contains the derived data described in step 4 in the codebook.
 
+Please see the codebook for details.
+
 The final_data_set.csv is included in the repository.
 
 
